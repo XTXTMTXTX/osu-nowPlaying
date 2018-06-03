@@ -57,7 +57,6 @@ LRESULT CALLBACK WndProc (HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) {
 		memset(szBuffer, 0, sizeof(szBuffer));
 		memset(Authorname, 0, sizeof(Authorname));
 		memset(Songname, 0, sizeof(Songname));
-		sprintf(Diffname,"Listening");
 		//wprintf(L"dwData:%d cbData:%d\r\nlpData:0x%08x = %ls\n",
 		//        pCopyData->dwData, pCopyData->cbData,
 		//       (PVOID)pCopyData->lpData, (wchar_t*)pCopyData->lpData);
@@ -66,6 +65,7 @@ LRESULT CALLBACK WndProc (HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) {
 			snprintf(Songname,1+int(strstr(pos+30,"\\0")-(pos+30)),"%s",pos+30);
 			pos=strstr(pos+30,"\\0");
 			snprintf(Authorname,1+int(strstr(pos+2,"\\0")-(pos+2)),"%s",pos+2);
+			sprintf(Diffname,"Listening");
 		}else if((pos=strstr(szBuffer,"Playing {0} - {1} [{3}] ({2})\\0"))){
 			snprintf(Songname,1+int(strstr(pos+31,"\\0")-(pos+31)),"%s",pos+31);
 			pos=strstr(pos+31,"\\0");
@@ -73,6 +73,18 @@ LRESULT CALLBACK WndProc (HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam) {
 			pos=strstr(pos+2,"\\0");
 			pos=strstr(pos+2,"\\0");
 			snprintf(Diffname,1+int(strstr(pos+2,"\\0")-(pos+2)),"%s",pos+2);
+		}else if((pos=strstr(szBuffer,"Watching {0} - {1} [{3}] ({2})\\0"))){
+			snprintf(Songname,1+int(strstr(pos+32,"\\0")-(pos+32)),"%s",pos+32);
+			pos=strstr(pos+32,"\\0");
+			snprintf(Authorname,1+int(strstr(pos+2,"\\0")-(pos+2)),"%s",pos+2);
+			pos=strstr(pos+2,"\\0");
+			pos=strstr(pos+2,"\\0");
+			snprintf(Diffname,1+int(strstr(pos+2,"\\0")-(pos+2)),"%s",pos+2);
+		}else if((pos=strstr(szBuffer,"Editing {0} - {1} ({2})\\0"))){
+			snprintf(Songname,1+int(strstr(pos+25,"\\0")-(pos+25)),"%s",pos+25);
+			pos=strstr(pos+25,"\\0");
+			snprintf(Authorname,1+int(strstr(pos+2,"\\0")-(pos+2)),"%s",pos+2);
+			sprintf(Diffname,"Editing");
 		}
 		printf("%s - %s [%s]\n",Authorname,Songname,Diffname);
 		return 0;
